@@ -35,6 +35,7 @@ class GA:
 
             if(tour2['tour'][i] not in tour_part):
                 new_tour.append(tour2['tour'][i])
+                
             index+=1
 
         return self.get_tour_detail(new_tour)
@@ -113,8 +114,7 @@ class GA:
     def initialise(self):
         tours = []
         for i in range(self.scale):
-            tour = self.get_tour()
-            tours.append(tour)
+            tours.append(self.get_tour())
 
         return tours
 
@@ -131,8 +131,7 @@ class GA:
     def init_citys(self):
         self._citys = {}
         for i in range(self.city_num):
-            c = self.get_random_city()
-            self._citys[i+1] = c
+            self._citys[i+1] = self.get_random_city()
 
     #绘图
     def show(self, tour):
@@ -210,5 +209,5 @@ class GA:
         self.show(new_fittest)
 
 if __name__ == '__main__':
-    ga = GA(30, 10, 1000, 0.8, 0.2);
+    ga = GA(30, 30, 100000, 0.8, 0.2);
     ga.run()
