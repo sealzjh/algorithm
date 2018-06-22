@@ -35,7 +35,7 @@ class GA:
 
             if(tour2['tour'][i] not in tour_part):
                 new_tour.append(tour2['tour'][i])
-                
+
             index+=1
 
         return self.get_tour_detail(new_tour)
@@ -209,5 +209,5 @@ class GA:
         self.show(new_fittest)
 
 if __name__ == '__main__':
-    ga = GA(30, 30, 100000, 0.8, 0.2);
+    ga = GA(50, 10, 1000, 0.8, 0.2);
     ga.run()
