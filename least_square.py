@@ -7,6 +7,7 @@ import numpy as np
 class LeastSquare:
     """
     最小二乘法
+    z = a + bx
     """
 
     def __init__(self):
@@ -35,8 +36,8 @@ class LeastSquare:
         x_sum = df['x'].sum()
         y_sum = df['y'].sum()
 
-        self.__b = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum)
         self.__a = (xx_sum * y_sum - xy_sum * x_sum) / (n * xx_sum - x_sum * x_sum)
+        self.__b = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum)
 
         print "a: ", self.__a
         print "b: ", self.__b
