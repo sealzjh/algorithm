@@ -6,7 +6,7 @@ import numpy as np
 
 class LeastSquare:
     """
-    z = a + bx
+    z = ax + b
     """
 
     def __init__(self, data, rate):
@@ -52,6 +52,8 @@ if __name__ == '__main__':
         [3, 7],
         [5, 13],
         [8, 17],
+        [9, 19],
+        #[10, 21],?
     ]
     gd = LeastSquare(data, 0.01)
 
