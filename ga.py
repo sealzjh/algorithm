@@ -4,17 +4,25 @@ import random
 import math
 import matplotlib.pyplot as plt  
 
+
 class GA:
         
     def __init__(self, s, n, g, c, e):
-        self.scale = s      #种群规模
-        self.city_num = n   #染色体数量(城市数量)
-        self.__max_gen = g  #运行代数
-        self.__pc = c       #交叉率
-        self.__elite = e    #每代多少胜出者
-   
-    #交叉
+        # 种群规模
+        self.scale = s
+        # 染色体数量(城市数量)
+        self.city_num = n
+        # 运行代数
+        self.__max_gen = g
+        # 交叉率
+        self.__pc = c
+        # 每代多少胜出者
+        self.__elite = e
+
+        self.__citys = {}
+
     def crossover(self, tour1, tour2):
+        # 交叉
         c1 = random.randint(0, len(tour1['tour'])-1)
         c2 = random.randint(0, len(tour1['tour'])-1)
 
@@ -33,15 +41,15 @@ class GA:
                 for item in tour_part:
                     new_tour.append(item)
 
-            if(tour2['tour'][i] not in tour_part):
+            if tour2['tour'][i] not in tour_part:
                 new_tour.append(tour2['tour'][i])
 
-            index+=1
+            index += 1
 
         return self.get_tour_detail(new_tour)
 
-    #变异
     def mutate(self, tour):
+        # 变异
         c1 = random.randint(0, len(tour['tour'])-1)
         c2 = random.randint(0, len(tour['tour'])-1)
 
@@ -58,37 +66,36 @@ class GA:
                 new_tour.append(tour['tour'][i])
 
         return self.get_tour_detail(new_tour)
-    
-    #随机生成城市坐标
+
     def get_random_city(self):
+        # 随机生成城市坐标
         c = {
             'x': random.randint(1, 99),
             'y': random.randint(1, 99)
         }
         
         return c
-       
-    #排序
+
     def sort(self, tours):
+        # 排序
         tours_sort = sorted(tours, key=lambda x:x['score'], reverse=True)
 
         return tours_sort
 
-    #获取距离
     def get_distance(self, c1, c2):
+        # 获取距离
         xd = abs(c1['x'] - c2['x'])
         yd = abs(c1['y'] - c2['y'])
         distance = math.sqrt(xd * xd + yd * yd)
         
         return distance
-        
-    #适应性函数 距离越小适应值越大
-    def get_score(self, distance):
 
+    def get_score(self, distance):
+        # 适应性函数 距离越小适应值越大
         return 1/(distance + 1);
- 
-    #随机获得一条路径
+
     def get_tour(self):
+        # 随机获得一条路径
         tour = []
         for key, value in self._citys.items():
             tour.append(key)
@@ -101,40 +108,38 @@ class GA:
         tmp = None
         distance = 0
         for item in tour:
-            distance_tmp = 0
             if tmp is not None:
                 distance_tmp = self.get_distance(self._citys[tmp], self._citys[item])
-                distance+= distance_tmp
+                distance += distance_tmp
 
             tmp = item
 
         return {'tour': tour, 'distance': distance, 'score': self.get_score(distance)}
 
-    #初始种群
     def initialise(self):
+        # 初始种群
         tours = []
         for i in range(self.scale):
             tours.append(self.get_tour())
 
         return tours
 
-    #获取当前种群中最优个体
     def get_fittest(self, tours):
+        # 获取当前种群中最优个体
         tmp = None
         for item in tours:
             if tmp is None or item['score'] > tmp['score']:
                 tmp = item
 
         return tmp
-    
-    #随机生成城市点
-    def init_citys(self):
-        self._citys = {}
-        for i in range(self.city_num):
-            self._citys[i+1] = self.get_random_city()
 
-    #绘图
+    def init_citys(self):
+        # 随机生成城市点
+        for i in range(self.city_num):
+            self.__citys[i+1] = self.get_random_city()
+
     def show(self, tour):
+        # 绘图
         plt.bar(left = 0,height = 100, width = 100, color=(0, 0, 0, 0), edgecolor=(0, 0, 0, 0))
         plt.title(u'tsp问题')
         plt.xlabel('total distance: %s m' % tour['distance'])
@@ -177,9 +182,9 @@ class GA:
                 same_num = 0
                 max_score = fittest['score']
             else:
-                same_num+=1
+                same_num += 1
 
-            #最大分数保持n次一直没有变化则退出
+            # 最大分数保持n次一直没有变化则退出
             if same_num > max_same_num:
                 break
 
@@ -190,10 +195,10 @@ class GA:
                     while c1 == c2:
                         c2 = random.randint(0, topelite)
 
-                    tour = self.crossover(ranked[c1], ranked[c2]) #交叉
+                    tour = self.crossover(ranked[c1], ranked[c2])
                 else:
                     c = random.randint(0, topelite - 1)
-                    tour = self.mutate(ranked[c]) #变异
+                    tour = self.mutate(ranked[c])
 
                 pop.append(tour)
 
@@ -201,13 +206,13 @@ class GA:
 
         print 'old fittest:'
         print old_fittest
-#        self.show(old_fittest)
 
         print 'new fittest:'
         new_fittest = self.get_fittest(pop)
         print new_fittest
         self.show(new_fittest)
 
+
 if __name__ == '__main__':
-    ga = GA(50, 10, 1000, 0.8, 0.2);
+    ga = GA(50, 10, 1000, 0.8, 0.2)
     ga.run()
