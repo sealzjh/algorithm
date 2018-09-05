@@ -78,7 +78,7 @@ class DecisionTree:
 
     def create_tree_id3(self, data_set, labels):
         class_list = [item[-1] for item in data_set]
-        # 类别完全相同则不再需要往下划分了
+        # 剪枝 - 信息足够识别则不再需要往下划分了
         if class_list.count(class_list[0]) == len(class_list):
             return class_list[0]
 
