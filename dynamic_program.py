@@ -78,8 +78,6 @@ class ButtomUpCut:
             self.count += 1
             self.cut_rs[key] = price
 
-        print self.cut_rs
-
     def run(self, length):
         return self.cut_rs[length]
 
@@ -113,10 +111,10 @@ if __name__ == '__main__':
     price_dict = load_data()
 
     recur_cut = RecurCut(price_dict)
-    print "RecurCut price: %s, count: %s" % (recur_cut.run(4), recur_cut.count)
+    print "RecurCut price: %s, count: %s" % (recur_cut.run(5), recur_cut.count)
 
     memo_cut = MemoCut(price_dict)
-    print "MemoCut price: %s, count: %s" % (memo_cut.run(4), memo_cut.count)
+    print "MemoCut price: %s, count: %s" % (memo_cut.run(5), memo_cut.count)
 
     button_up_cut = ButtomUpCut(price_dict)
-    print "ButtomUpCut price: %s, count: %s" % (button_up_cut.run(4), button_up_cut.count)
+    print "ButtomUpCut price: %s, count: %s" % (button_up_cut.run(5), button_up_cut.count)
