@@ -27,8 +27,8 @@ class DecisionTree:
 
         ent = 0
         for key in label_counts:
-            label_prop = float(label_counts[key]) / total_len
-            ent -= label_prop * log(label_prop, 2)
+            label_prob = float(label_counts[key]) / total_len
+            ent -= label_prob * log(label_prob, 2)
 
         return ent
 
@@ -78,7 +78,7 @@ class DecisionTree:
 
     def create_tree_id3(self, data_set, labels):
         class_list = [item[-1] for item in data_set]
-        # 剪枝 - 信息足够识别则不再需要往下划分了
+        # 预剪枝 - 所有数据属于同一类型停止分枝
         if class_list.count(class_list[0]) == len(class_list):
             return class_list[0]
 
@@ -100,6 +100,7 @@ class DecisionTree:
             self.__feature_labels[labels[axis]] = axis
 
         self.__tree = self.create_tree_id3(data_set, labels)
+        print "tree:", self.__tree
 
     def predict_tree(self, tree, product):
         for key in tree:
